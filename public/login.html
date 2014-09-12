@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+      html,body{
+        height:100%;
+        padding:0;
+        margin:0;
+        font-size:small;
+        text-align:center;
+        font-family:helvetica,sans-serif;
+      } form{
+        display:block;
+        background:#ccc;
+        border:2px solid red;
+        padding: 0;
+        width:500px;
+        margin:10px auto;
+      } div{
+        padding: 1px;
+        zoom: 1;
+      } p {
+        margin: 10px 15px;
+      } h1{
+        font-weight:bold;
+        font-size:21px;
+        margin:0;
+        padding:10px;
+        text-align:center;
+      } ul{
+        margin:15px auto;
+        width:75%;
+      } h2{
+        margin:15px;
+        font-weight:bold;
+        text-align:left;
+      } label,h2{
+        font-size:12px;
+      } table{
+        width:100%;
+        height: 100%;
+        font-size: 12px;
+      } td{
+        vertical-align:middle;
+        text-align: center;
+      } .msg, label{
+        font-weight:bold;
+      } #ft_sm {
+        background: #eee;
+        text-align: left;
+      }
+      #ft_sb div {
+        text-align: right;
+        width: 75%;
+        margin: 5px auto;
+        padding: 5px;
+      }
+      .dci{
+        overflow:auto;
+        height:150px;
+        border:1px solid #7f9db9;
+        background:#fff;
+        padding: 5px;
+        font-family:verdana,monospace;
+        font-size:12px;
+        text-align:left;
+      } .fl{
+        display:inline;
+        float:left;
+        margin: 2px;
+      } .logo{
+        background:#ccc center 25px url(%%IMAGE:logo_fw_auth%%) no-repeat;
+        padding-top:80px;
+      } .hl{
+        color:#ff6000;
+      }
+    </style>
+    <title>Taura Brasil - WIFI</title>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td>
+          <form action="/" method="post">
+            <h1>Taura Brasil - WIFI</h1>
+            <input type="hidden" name="%%REDIRID%%" value="%%PROTURI%%">
+            <input type="hidden" name="%%MAGICID%%" value="%%MAGICVAL%%">
+            <div id="ft_sb">
+              <div id="auth">
+                <p>
+                  <label class="fl" for="ft_un">Usuário:</label>
+                  <input name="%%USERNAMEID%%" id="ft_un" type="text" autocorrect="off" autocapitalize="off" style="width:245px">
+                </p>
+                <p>
+                  <label class="fl" for="ft_pd">Senha:</label>
+                  <input name="%%PASSWORDID%%" id="ft_pd" type="password" autocomplete="off" style="width:245px">
+                </p>
+                <p>
+                  <input type="submit" id="ft_ci" value="Login">
+                </p>
+              </div>
+            </div>
+          </form>
+        </td>
+      </tr>
+    </table>
+
+  </body>
+</html>
