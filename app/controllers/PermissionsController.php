@@ -1,5 +1,7 @@
 <?php 
 
+use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException as Exception;
+
 class PermissionsController
 {
 
@@ -22,12 +24,14 @@ class PermissionsController
 		$permissions = explode("\n", $user->grupo->permissions);
 
 		foreach ($aclList as $p){
-			if(in_array($p, $permissions)){
-				return true;
-			}
+			foreach ($permissions as $db) {
+				if(trim($p) == trim($db)){
+					return true;
+				}
+			}	
 		}
 
-		throw new HttpException(403, 'Acesso negado!');
+		throw new Exception('Você não tem permissão!');
 	
 	}
 

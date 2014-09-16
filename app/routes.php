@@ -19,17 +19,14 @@ Route::get('login', 'LoginController@login');
 Route::post('login', 'LoginController@auth');
 Route::get('logoff', 'LoginController@logoff');
 
-
-
-Route::group(array('before' => 'auth'), function()
+//
+Route::group(array('before' => 'auth|error'), function()
 {
-
 	//
 	Route::controller('/usuarios/grupos', 'UsuariosGruposController');
 	Route::controller('/usuarios', 'UsuariosController');
 
-
-	// home
+	//
 	Route::controller('/', 'AdminController');
 });
 

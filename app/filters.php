@@ -1,4 +1,12 @@
 <?php
+Route::filter('error', function () {
+    App::error(function (Exception $exception, $code) {
+    	if($code == 403){
+       		return Redirect::back()->with('message', $exception->getMessage());
+    	}
+
+    });
+});
 
 /*
 |--------------------------------------------------------------------------
