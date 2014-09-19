@@ -2,19 +2,22 @@
 
 //
 return [
+	
+	'*' => 'Super Administrador';
 
 	//
-	'usuarios.*' => 'Gerenciar todos usuários e grupos',
-	'usuarios.index' => 'Listar usuários',
-	'usuarios.new' => 'Adicionar novos usuários',
-	'usuarios.edit' => 'Editar usuários',
-	'usuarios.delete' => 'Deletar usuários',
-	'usuarios.status' => 'Alterar status dos usuários',
+	'usuarios.*' => 'Gerenciar usuários',
+	'usuarios.index' => 'Listar',
+	'usuarios.new' => 'Adicionar',
+	'usuarios.edit' => 'Editar',
+	'usuarios.delete' => 'Deletar',
+	'usuarios.status' => 'Alterar status',
 
 	//
-	'usuarios.grupos.*' => 'Gerenciar todos grupos de usuários',
-	'usuarios.grupos.index' => 'Listar grupos de usuários',
-	'usuarios.grupos.new' => 'Adicionar novos grupos de usuários',
-	'usuarios.grupos.edit' => 'Editar grupos de usuários',
-	'usuarios.grupos.delete' => 'Deletar grupos de usuários',
+	'usuarios.grupos.*' => 'Gerenciar grupos',
+	'usuarios.grupos.index' => 'Listar',
+	'usuarios.grupos.new' => 'Adicionar',
+	'usuarios.grupos.edit' => 'Editar',
+	'usuarios.grupos.delete' => 'Deletar',
+	'usuarios.grupos.status' => 'Alterar status',
 ]

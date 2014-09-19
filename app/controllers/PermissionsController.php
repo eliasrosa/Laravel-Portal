@@ -10,7 +10,9 @@ class PermissionsController
 	 */
 	public static function check($acl){
 
-		$aclList = [$acl];
+		// captura e monta todos a acl permitidas
+		// por níveis e subníveis
+		$aclList = [$acl, '*'];
 		$subGrupo = explode('.', $acl);
 					
 		while (count($subGrupo) != 1) {
@@ -19,10 +21,18 @@ class PermissionsController
 		} 
 
 
-		//
-		$user = Auth::user()->with('grupo')->first();
-		$permissions = explode("\n", $user->grupo->permissions);
+		// busca no banco de dados as permissions do grupo
+		// ligadas ao usuários logado no sistema
+		$user = Auth::user()
+			->with('grupo')
+			->remember(Config::get('database.remember', 10))
+			->first();
 
+		// 
+		$permissions = explode(';', $user->grupo->permissions);
+
+
+		// check as pemissions
 		foreach ($aclList as $p){
 			foreach ($permissions as $db) {
 				if(trim($p) == trim($db)){

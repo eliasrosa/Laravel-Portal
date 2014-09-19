@@ -121,4 +121,7 @@ return array(
 
 	),
 
+	//
+	'remember' => 10,
+
 );
