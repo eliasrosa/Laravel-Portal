@@ -10,10 +10,6 @@
         {{ Form::text('nome') }}
     {{ Form::closeGroup() }}
 
-    {{ Form::openGroup('status', 'Status') }}
-        {{ Form::status() }}
-    {{ Form::closeGroup() }}
-
     {{ Form::btnSalvar() }}
 
 {{ Form::close() }}

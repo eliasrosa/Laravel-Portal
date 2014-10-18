@@ -42,8 +42,7 @@ class UsuariosGruposController extends BaseController {
 
 		//
 		$rules = array(
-			'nome' => 'required|min:5|unique:usuarios_grupos',
-    		'status' => 'required|integer',
+			'nome' => 'required|min:5|unique:usuarios_grupos'
     	);
     	
 		$validator = Validator::make(Input::all(), $rules);
@@ -52,11 +51,11 @@ class UsuariosGruposController extends BaseController {
 
 		    $user = new UsuarioGrupo;
 		    $user->nome = Input::get('nome');
-		    $user->status = Input::get('status');
+		    $user->status = 1;
 		    $user->save();
 		 
 		    return Redirect::to('usuarios/grupos/new')
-		    	->with('message', 'Usuário foi cadastrado com sucesso!')
+		    	->with('message', 'Grupo cadastrado com sucesso!')
 		    	->with('alert', 'success');
 
 		} else {
@@ -91,8 +90,7 @@ class UsuariosGruposController extends BaseController {
 		
 		//
 		$rules = array(
-			'nome' => 'required|min:5|unique:usuarios_grupos,nome,'. Input::get('id'),
-    		'status' => 'required|integer',
+			'nome' => 'required|min:5|unique:usuarios_grupos,nome,'. Input::get('id')
     	);
     	
 		$validator = Validator::make(Input::all(), $rules);
@@ -101,7 +99,6 @@ class UsuariosGruposController extends BaseController {
 
 		    $db = UsuarioGrupo::find(Input::get('id'));
 		    $db->nome = Input::get('nome');
-		    $db->status = Input::get('status');
 		    $db->save();
 		 
 		    return Redirect::to('usuarios/grupos/edit/' . $db->id)
@@ -144,6 +141,33 @@ class UsuariosGruposController extends BaseController {
 	    	->with('alert', 'danger');
 	}
 
+
+	/**
+	 * 
+	 */
+	public function getStatus($id)
+	{
+		//
+		PermissionsController::check('usuarios.grupos.status');
+
+		//
+		if(Auth::user()->id_grupo == $id){
+		    return Redirect::to('usuarios/grupos')
+		    	->with('message', 'Você não pode alterar o status do seu próprio grupo!')
+		    	->with('alert', 'danger');				
+		}
+
+
+	    //
+		$grupo = UsuarioGrupo::find($id);
+		$grupo->status = ($grupo->status ? 0 : 1);
+		$grupo->save();
+
+		//
+	    return Redirect::to('usuarios/grupos')
+	    	->with('message', 'Status do grupo foi alterado com sucesso!')
+	    	->with('alert', 'success');
+	}
 	/**
 	 * 
 	 */
@@ -162,11 +186,16 @@ class UsuariosGruposController extends BaseController {
 		$grid->addColuna('Status', 'status');
 		$grid->addTimestamps();
 		$grid->addColuna('Opções', function($i){
+			$out = '<a href="/usuarios/grupos/edit/{id}">Editar</a> | ';
+			$out .= '<a href="/usuarios/grupos/delete/{id}">Remover</a> | ';
 
-			$out = '<a href="/usuarios/grupos/edit/%s">Editar</a> | ';
-			$out .= '<a href="/usuarios/grupos/delete/%s">Remover</a>';
+			if($i->status){
+				$out .= '<a href="/usuarios/grupos/status/{id}">Desativar</a>';
+			}else{
+				$out .= '<a href="/usuarios/grupos/status/{id}">Ativar</a>';
+			}
 
-			return sprintf($out, $i->id, $i->id);
+			return str_replace('{id}', $i->id, $out);
 		});
 
 		return $grid->make();
@@ -182,5 +211,5 @@ class UsuariosGruposController extends BaseController {
 		}
 
 		return $grupos;
-	}
+	}	
 }
