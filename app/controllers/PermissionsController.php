@@ -8,7 +8,7 @@ class PermissionsController
 	/**
 	 * 
 	 */
-	public static function check($acl){
+	public static function check($acl, $returnFalse = false){
 
 		// captura e monta todos a acl permitidas
 		// por níveis e subníveis
@@ -20,29 +20,87 @@ class PermissionsController
 			$aclList[] = implode('.', $subGrupo) . '.*';
 		} 
 
+		//
+		$grupoId = Auth::user()->id_grupo;
+		$permissions = self::getPermissiosByGroup($grupoId);
 
-		// busca no banco de dados as permissions do grupo
-		// ligadas ao usuários logado no sistema
-		$user = Auth::user()
-			->with('grupo')
-			->remember(Config::get('database.remember', 10))
-			->first();
+		//
+		if(!self::verifyByArray($aclList, $permissions)){
+			if($returnFalse == true){
+				return false;
+			}
 
-		// 
-		$permissions = explode(';', $user->grupo->permissions);
-
-
-		// check as pemissions
-		foreach ($aclList as $p){
-			foreach ($permissions as $db) {
-				if(trim($p) == trim($db)){
-					return true;
-				}
-			}	
+			throw new Exception('Você não tem permissão!');
 		}
 
-		throw new Exception('Você não tem permissão!');
-	
+	}
+
+
+	/**
+	 * 
+	 */
+	public static function verify($key, $permissions){
+
+		foreach ($permissions as $p) {
+			if(trim($key) == trim($p)){
+				return true;
+			}
+		}	
+
+		return false;
+	}
+
+
+	/**
+	 * 
+	 */
+	public static function verifyByArray($keys, $permissions){
+
+		foreach ($keys as $key) {
+			if(self::verify($key, $permissions)){
+				return true;
+			}
+		}	
+
+		return false;
+	}
+
+
+	/**
+	 * 
+	 */
+	public static function loadAll()
+	{
+		//
+		$permissions = include(app_path() . '/permissions.php');
+
+		//
+		$data = array(
+			array(
+				'text' => 'Super Administrador',
+				'id' => '*',
+				'state' =>  array(
+					'opened' => true
+				),
+				'children' => $permissions,
+			)
+		);
+
+		return $data;
+	}
+
+
+	/**
+	 * 
+	 */
+	public static function getPermissiosByGroup($grupoId)
+	{
+		//
+		$grupo = DB::table('usuarios_grupos')->find($grupoId);
+		$permissions = explode(';', $grupo->permissions);
+
+		//
+		return $permissions;
 	}
 
 }

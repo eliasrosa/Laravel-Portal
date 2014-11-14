@@ -7,11 +7,13 @@
     <meta name="robots" content="noindex">
     <meta name="googlebot" content="noindex">
     
-    <title>Intranet Taura Brasil</title>
+    <title>Portal</title>
 
     <!-- style -->
     {{ HTML::style('css/bootstrap.min.css') }}
     {{ HTML::style('css/main.css')}}
+    {{ HTML::script('js/jquery-1.11.1.min.js')}}
+    {{ HTML::script('js/bootstrap.min.js')}}
     
     
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -30,7 +32,7 @@
           <span class="icon-bar"></span>
           <span cl ass="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/">Taura Brasil</a>
+        <a class="navbar-brand" href="/">Portal</a>
       </div>
       <div class="navbar-collapse navbar-responsive-collapse collapse in">
           @include('layouts.menu')
@@ -47,10 +49,6 @@
         @yield ('content')
       </div>
     </div>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    {{ HTML::script('js/bootstrap.min.js') }}
+    
   </body>
 </html>

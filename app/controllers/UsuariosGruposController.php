@@ -66,6 +66,7 @@ class UsuariosGruposController extends BaseController {
 
 	}
 
+
 	/**
 	 * 
 	 */
@@ -74,10 +75,54 @@ class UsuariosGruposController extends BaseController {
 		//
 		PermissionsController::check('usuarios.grupos.edit');
 
+		$grupo = UsuarioGrupo::find($id);
+
 		//
 		$this->layout->content = View::make('usuarios.grupos.edit', [
-			'grupo' => UsuarioGrupo::find($id)
+			'grupo' => $grupo
 		]);
+	}
+
+
+	/**
+	 * 
+	 */
+	public function getPermissions($grupoId)
+	{
+		//
+		PermissionsController::check('usuarios.grupos.edit');
+
+		//
+		$permissions = PermissionsController::loadAll();
+
+		$list = PermissionsController::getPermissiosByGroup($grupoId);
+		$json = $this->checkPermissions($permissions, $list);
+
+		//
+		return Response::json($json);
+	}
+
+	private function checkPermissions($permissions, $list){
+
+		foreach ($permissions as $k => &$p) {
+
+			//
+			if(in_array($p['id'], $list)){
+				$p['state']['selected'] = true;
+			}
+
+			//
+			//if(PermissionsController::check($p['id'], true)){
+			//	$p['state']['disabled'] = true;
+			//}
+
+			//
+			if(isset($p['children']) && is_array($p['children'])){
+				$p['children'] = $this->checkPermissions($p['children'], $list);
+			}
+		}
+
+		return $permissions;
 	}
 
 	/**
@@ -99,14 +144,15 @@ class UsuariosGruposController extends BaseController {
 
 		    $db = UsuarioGrupo::find(Input::get('id'));
 		    $db->nome = Input::get('nome');
+		    $db->permissions = Input::get('permissions');
 		    $db->save();
 		 
-		    return Redirect::to('usuarios/grupos/edit/' . $db->id)
+		    return Redirect::to('usuarios/grupos/edit/' . Input::get('id'))
 		    	->with('message', 'Grupo atualizado com sucesso!')
 		    	->with('alert', 'success');
 
 		} else {
-		    return Redirect::to('usuarios/grupos/edit/' . $db->id)
+		    return Redirect::to('usuarios/grupos/edit/' . Input::get('id'))
 		    	->withErrors($validator)
 		    	->withInput();
 		}
@@ -168,6 +214,8 @@ class UsuariosGruposController extends BaseController {
 	    	->with('message', 'Status do grupo foi alterado com sucesso!')
 	    	->with('alert', 'success');
 	}
+
+	
 	/**
 	 * 
 	 */
